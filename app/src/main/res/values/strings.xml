@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Quaker Tracker</string>
+    <string name="earthquake_type">Earthquake Type is:</string>
+    <string name="magnitude">Magnitude:</string>
+    <string name="date">Date:</string>
+    <string name="location">Location:</string>
+    <string name="earthquake_detail">Earthquake Detail</string>
+</resources>
