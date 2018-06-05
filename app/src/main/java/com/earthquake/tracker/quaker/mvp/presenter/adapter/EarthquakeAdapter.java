@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.earthquake.tracker.quaker.R;
 import com.earthquake.tracker.quaker.mvp.helper.Utils;
-import com.earthquake.tracker.quaker.mvp.model.Earthquake;
 import com.earthquake.tracker.quaker.mvp.model.Feature;
 import com.earthquake.tracker.quaker.mvp.view.EarthquakeDetailsActivity;
 
@@ -46,11 +45,13 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
     }
 
     public void hideItem(final int position) {
-        Log.i(TAG, "Before hiding, size is: " + featureList.size());
-        featureList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, featureList.size());
-        notifyDataSetChanged();
+        Log.i(TAG, "Data size is: " + featureList.size());
+        if (featureList.size() > 0) {
+            featureList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, featureList.size());
+            notifyDataSetChanged();
+        }
         Log.i(TAG, "After hiding size is: " + featureList.size());
     }
 

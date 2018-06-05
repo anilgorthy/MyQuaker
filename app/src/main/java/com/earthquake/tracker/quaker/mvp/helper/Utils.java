@@ -72,6 +72,7 @@ public class Utils {
     }
 
     public static List<Integer> getHideItemPositionList() {
+        Log.i(TAG, "In getHideItemPositionList() size is: " + removedPositions.size());
         return removedPositions;
     }
 
@@ -80,10 +81,10 @@ public class Utils {
                 .getSharedPreferences(DEFAULT_SHARED_PREFERENCE,
                         Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        Log.i(TAG, "Removed position size was: " + removedPositions.size());
+        Log.i(TAG, "Removed positions size was: " + removedPositions.size());
         editor.putInt(ITEM_POSITION, position).apply();
         removedPositions.add(position);
-        Log.i(TAG, "Removed position size is: " + removedPositions.size());
+        Log.i(TAG, "Removed positions size is: " + removedPositions.size());
     }
 
     public static int getPositionForHide() {

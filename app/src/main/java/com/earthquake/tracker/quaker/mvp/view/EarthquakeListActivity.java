@@ -34,10 +34,12 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     private LinearLayoutManager layoutManager;
     private static int index = -1;
     private static int top = -1;
+    private List<Feature> mFeatureList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "In onCreate()");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         quakerPresenter = new QuakerPresenter(this);
@@ -49,8 +51,15 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i(TAG, "In onRestoreInstanceState()");
+    }
+
+    @Override
     public void quakesData(List<Feature> featureList) {
-        Log.i(TAG, "Earthquake data (BEFORE hiding) size is: " + featureList.size());
+        Log.i(TAG, "In quakesData(), earthquake data size is: " + featureList.size());
+        mFeatureList = featureList;
         earthquakeAdapter.setData(featureList);
         earthquakeRV.setAdapter(earthquakeAdapter);
     }
@@ -60,33 +69,64 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         super.onPause();
         Log.i(TAG, "In onPause()");
         //read current position
+//        index = layoutManager.findFirstVisibleItemPosition();
+//        View v = earthquakeRV.getChildAt(0);
+//        top = (v == null) ? 0 : (v.getTop() - earthquakeRV.getPaddingTop());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "In onResume(), mFeatureList size is: " + mFeatureList);
+        //set the position
+        if(index != -1) {
+            layoutManager.scrollToPositionWithOffset(index, top);
+        }
+
+
+        /*TODO:
+          Every time the activity resumes, the item will be hidden
+          even though the user didn't initiate
+         */
+//        if (Utils.getHideItemPositionList().size() > 0) {
+//            earthquakeAdapter.hideItem(Utils.getPositionForHide());
+//        }
+
+        showAllItems.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    Log.i(TAG, "Showing all items");
+                    Utils.resetHideItemList();
+                    /*TODO: leverage cached data and don't make another API call
+                        TODO: notify/update adapter?
+                     */
+                    quakerPresenter.fetchSignificantEarthquakeData();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "In onStop()");
+        //read current position
         index = layoutManager.findFirstVisibleItemPosition();
         View v = earthquakeRV.getChildAt(0);
         top = (v == null) ? 0 : (v.getTop() - earthquakeRV.getPaddingTop());
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i(TAG, "In onResume()");
-        //set the position
-        if(index != -1) {
-            layoutManager.scrollToPositionWithOffset(index, top);
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "In onDestroy()");
+    }
 
-        showAllItems.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
-                    Utils.resetHideItemList();
-                    quakerPresenter.fetchSignificantEarthquakeData();
-                }
-            }
-        });
 
-        if (Utils.getHideItemPositionList().size() > 0) {
-            earthquakeAdapter.hideItem(Utils.getPositionForHide());
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
 }

@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class EarthquakeDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.hideItem)
-    Switch showHideSwitch;
+    Switch hideItem;
 
     @BindView(R.id.dateValueTV)
     TextView dateValueTV;
@@ -51,6 +51,7 @@ public class EarthquakeDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "In onCreate()");
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
         final Intent intent = getIntent();
@@ -62,15 +63,31 @@ public class EarthquakeDetailsActivity extends AppCompatActivity {
             position = intent.getIntExtra(FEATURE_POSITION, -1);
         }
 
-        showHideSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        hideItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
+                    /*TODO:
+                        Handle for when the user goes "checked/unchecked"; perhaps
+                        preserve the last known state before the user exited this screen
+                     */
                     Utils.setPositionToHide(position);
                     Log.i(TAG, "Index of item selected for hide is: " + position);
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "In onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "In onResume()");
     }
 
 }

@@ -5,4 +5,6 @@
     <string name="date">Date:</string>
     <string name="location">Location:</string>
     <string name="earthquake_detail">Earthquake Detail</string>
+    <string name="showAll">Show All</string>
+    <string name="hide">Hide</string>
 </resources>

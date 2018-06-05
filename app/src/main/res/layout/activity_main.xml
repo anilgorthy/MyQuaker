@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="10dp"
+        android:checked="false"
+        android:text="@string/showAll"
         android:switchPadding="10dp"/>
 
     <android.support.v7.widget.RecyclerView

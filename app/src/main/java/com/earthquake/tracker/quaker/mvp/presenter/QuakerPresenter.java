@@ -4,14 +4,9 @@ import android.util.Log;
 
 import com.earthquake.tracker.quaker.mvp.model.ApiResponse;
 import com.earthquake.tracker.quaker.mvp.model.Earthquake;
-import com.earthquake.tracker.quaker.mvp.model.Feature;
 import com.earthquake.tracker.quaker.mvp.model.network.ApiCallback;
 import com.earthquake.tracker.quaker.mvp.model.network.UsgsRestClient;
-import com.earthquake.tracker.quaker.mvp.presenter.adapter.EarthquakeAdapter;
 import com.earthquake.tracker.quaker.mvp.view.QuakerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuakerPresenter {
 
