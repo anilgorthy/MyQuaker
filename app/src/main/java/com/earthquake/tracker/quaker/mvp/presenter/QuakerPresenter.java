@@ -37,6 +37,22 @@ public class QuakerPresenter {
         });
     }
 
+    public void fetchOneAndAboveEarthquakeData() {
+        usgsRestClient.getMagOneAboveEarthquakes(new ApiCallback<Earthquake>() {
+            @Override
+            public void onResponse(ApiResponse<Earthquake> apiResponse) {
+                Log.i(TAG, "Status code for data fetch from USGS: " + apiResponse.getStatusCode());
+                final Earthquake earthquake = apiResponse.getResponseObject();
+                quakerView.quakesData(earthquake.getFeatures());
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.e(TAG, "Error fetching data from USGS: " + message);
+            }
+        });
+    }
+
     /**
      * FYI: The data size is ~10k so, for this demo not using this API
      */

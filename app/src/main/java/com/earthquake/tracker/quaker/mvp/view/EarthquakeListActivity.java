@@ -43,7 +43,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         quakerPresenter = new QuakerPresenter(this);
-        quakerPresenter.fetchSignificantEarthquakeData();
+        quakerPresenter.fetchOneAndAboveEarthquakeData();
         layoutManager = new LinearLayoutManager(this,
                             LinearLayoutManager.VERTICAL, false);
         earthquakeRV.setLayoutManager(layoutManager);
@@ -83,7 +83,6 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
             layoutManager.scrollToPositionWithOffset(index, top);
         }
 
-
         /*TODO:
           Every time the activity resumes, the item will be hidden
           even though the user didn't initiate
@@ -101,7 +100,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
                     /*TODO: leverage cached data and don't make another API call
                         TODO: notify/update adapter?
                      */
-                    quakerPresenter.fetchSignificantEarthquakeData();
+//                    quakerPresenter.fetchSignificantEarthquakeData();
                 }
             }
         });

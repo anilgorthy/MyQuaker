@@ -12,7 +12,7 @@ public class QuakerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
-        UsgsRestClient.init();
+        UsgsRestClient.init(this);
     }
 
     public static QuakerApplication getQuakerApplication() {

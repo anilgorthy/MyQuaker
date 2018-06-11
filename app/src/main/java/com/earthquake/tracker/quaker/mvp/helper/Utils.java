@@ -94,4 +94,8 @@ public class Utils {
         return sharedPreferences.getInt(ITEM_POSITION, -1);
     }
 
+//    public static String getFileCache(Context context) {
+//
+//    }
+
 }
