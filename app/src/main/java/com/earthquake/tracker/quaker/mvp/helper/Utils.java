@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.earthquake.tracker.quaker.mvp.QuakerApplication;
@@ -83,6 +85,7 @@ public class Utils {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         Log.i(TAG, "Removed positions size was: " + removedPositions.size());
         editor.putInt(ITEM_POSITION, position).apply();
+        //TODO: how do I prevent the data size from growing past the total data size?
         removedPositions.add(position);
         Log.i(TAG, "Removed positions size is: " + removedPositions.size());
     }
@@ -97,5 +100,12 @@ public class Utils {
 //    public static String getFileCache(Context context) {
 //
 //    }
+
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) QuakerApplication.getQuakerApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 }

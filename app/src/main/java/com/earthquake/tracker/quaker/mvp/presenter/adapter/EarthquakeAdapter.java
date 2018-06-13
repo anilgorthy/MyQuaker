@@ -45,14 +45,14 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
     }
 
     public void hideItem(final int position) {
-        Log.i(TAG, "Data size is: " + featureList.size());
+        Log.i(TAG, "Before hiding data size is: " + featureList.size());
         if (featureList.size() > 0) {
             featureList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, featureList.size());
             notifyDataSetChanged();
+            Log.i(TAG, "After hiding data size is: " + featureList.size());
         }
-        Log.i(TAG, "After hiding size is: " + featureList.size());
     }
 
     @Override

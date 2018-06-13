@@ -43,7 +43,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         quakerPresenter = new QuakerPresenter(this);
-        quakerPresenter.fetchOneAndAboveEarthquakeData();
+        quakerPresenter.fetchSignificantEarthquakeData();
         layoutManager = new LinearLayoutManager(this,
                             LinearLayoutManager.VERTICAL, false);
         earthquakeRV.setLayoutManager(layoutManager);
@@ -87,9 +87,9 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
           Every time the activity resumes, the item will be hidden
           even though the user didn't initiate
          */
-//        if (Utils.getHideItemPositionList().size() > 0) {
-//            earthquakeAdapter.hideItem(Utils.getPositionForHide());
-//        }
+        if (Utils.getHideItemPositionList().size() > 0) {
+            earthquakeAdapter.hideItem(Utils.getPositionForHide());
+        }
 
         showAllItems.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -97,10 +97,6 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
                 if(isChecked) {
                     Log.i(TAG, "Showing all items");
                     Utils.resetHideItemList();
-                    /*TODO: leverage cached data and don't make another API call
-                        TODO: notify/update adapter?
-                     */
-//                    quakerPresenter.fetchSignificantEarthquakeData();
                 }
             }
         });

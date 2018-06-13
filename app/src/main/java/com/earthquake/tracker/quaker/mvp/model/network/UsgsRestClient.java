@@ -4,10 +4,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.earthquake.tracker.quaker.mvp.helper.Utils;
 import com.earthquake.tracker.quaker.mvp.model.ApiResponse;
 import com.earthquake.tracker.quaker.mvp.model.Earthquake;
 
+import java.io.IOException;
+
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -28,6 +32,24 @@ public class UsgsRestClient {
         initRetrofit(context);
     }
 
+//    private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
+//        @Override
+//        public okhttp3.Response intercept(Chain chain) throws IOException {
+//            okhttp3.Response originalResponse = chain.proceed(chain.request());
+//            if (Utils.isNetworkAvailable()) {
+//                int maxAge = 60; // read from cache for 1 minute
+//                return originalResponse.newBuilder()
+//                        .header("Cache-Control", "public, max-age=" + maxAge)
+//                        .build();
+//            } else {
+//                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+//                return originalResponse.newBuilder()
+//                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                        .build();
+//            }
+//        }
+//    };
+
     private static void initRetrofit(Context context) {
 
         int cacheSize = 10 * 1024 * 1024; // 10 MB
@@ -39,7 +61,25 @@ public class UsgsRestClient {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                                             .cache(cache)
-//                                            .addNetworkInterceptor(networkCacheInterceptor)
+                                            .addNetworkInterceptor(new Interceptor() {
+                                                @Override
+                                                public okhttp3.Response intercept(Chain chain) throws IOException {
+                                                    okhttp3.Response originalResponse = chain.proceed(chain.request());
+                                                    if (Utils.isNetworkAvailable()) {
+                                                        Log.i(TAG, "Connected to the data network");
+                                                        int maxAge = 600; // read from cache for 10 minutes
+                                                        return originalResponse.newBuilder()
+                                                                .header("Cache-Control", "public, max-age=" + maxAge)
+                                                                .build();
+                                                    } else {
+                                                        Log.i(TAG, "NOT connected to the data network");
+                                                        int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+                                                        return originalResponse.newBuilder()
+                                                                .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                                                                .build();
+                                                    }
+                                                }
+                                            })
                                             .addInterceptor(loggingInterceptor)
                                             .build();
 
@@ -59,12 +99,13 @@ public class UsgsRestClient {
             @Override
             public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
                 if (response.isSuccessful() && response.raw().cacheResponse() != null) {
-                    Log.d(TAG, "response came from cache");
+                    Log.d(TAG, "Response from cache");
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
 
                 if(response.isSuccessful() && response.raw().networkResponse() != null) {
-                    Log.d(TAG, "response came from server");
+                    Log.d(TAG, "Response from server w/ status code: "
+                                                + response.code());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
             }
@@ -84,7 +125,14 @@ public class UsgsRestClient {
         call.enqueue(new Callback<Earthquake>() {
             @Override
             public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.raw().cacheResponse() != null) {
+                    Log.d(TAG, "Response from cache");
+                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
+                }
+
+                if(response.isSuccessful() && response.raw().networkResponse() != null) {
+                    Log.d(TAG, "Response from server w/ status code: "
+                            + response.code());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
             }
@@ -104,7 +152,14 @@ public class UsgsRestClient {
         call.enqueue(new Callback<Earthquake>() {
             @Override
             public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.raw().cacheResponse() != null) {
+                    Log.d(TAG, "Response from cache");
+                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
+                }
+
+                if(response.isSuccessful() && response.raw().networkResponse() != null) {
+                    Log.d(TAG, "Response from server w/ status code: "
+                            + response.code());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
             }

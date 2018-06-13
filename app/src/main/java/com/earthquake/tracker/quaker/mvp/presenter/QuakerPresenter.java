@@ -25,7 +25,6 @@ public class QuakerPresenter {
         usgsRestClient.get30DayEarthquakesSignificant(new ApiCallback<Earthquake>() {
             @Override
             public void onResponse(ApiResponse<Earthquake> apiResponse) {
-                Log.i(TAG, "Status code for data fetch from USGS: " + apiResponse.getStatusCode());
                 final Earthquake earthquake = apiResponse.getResponseObject();
                 quakerView.quakesData(earthquake.getFeatures());
             }
@@ -41,7 +40,6 @@ public class QuakerPresenter {
         usgsRestClient.getMagOneAboveEarthquakes(new ApiCallback<Earthquake>() {
             @Override
             public void onResponse(ApiResponse<Earthquake> apiResponse) {
-                Log.i(TAG, "Status code for data fetch from USGS: " + apiResponse.getStatusCode());
                 final Earthquake earthquake = apiResponse.getResponseObject();
                 quakerView.quakesData(earthquake.getFeatures());
             }
@@ -60,7 +58,6 @@ public class QuakerPresenter {
         usgsRestClient.get30DayEarthquakesAll(new ApiCallback<Earthquake>() {
             @Override
             public void onResponse(ApiResponse<Earthquake> apiResponse) {
-                Log.i(TAG, "Status code for data fetch from USGS: " + apiResponse.getStatusCode());
                 final Earthquake earthquake = apiResponse.getResponseObject();
                 quakerView.quakesData(earthquake.getFeatures());
             }
