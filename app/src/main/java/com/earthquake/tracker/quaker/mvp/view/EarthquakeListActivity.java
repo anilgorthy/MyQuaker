@@ -43,7 +43,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         quakerPresenter = new QuakerPresenter(this);
-        quakerPresenter.fetchSignificantEarthquakeData();
+        quakerPresenter.fetchOneAndAboveEarthquakeData();
         layoutManager = new LinearLayoutManager(this,
                             LinearLayoutManager.VERTICAL, false);
         earthquakeRV.setLayoutManager(layoutManager);
@@ -77,7 +77,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "In onResume(), mFeatureList size is: " + mFeatureList);
+        Log.i(TAG, "In onResume(), mFeatureList size is: " + mFeatureList.size());
         //set the position
         if(index != -1) {
             layoutManager.scrollToPositionWithOffset(index, top);
@@ -117,7 +117,6 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         super.onDestroy();
         Log.i(TAG, "In onDestroy()");
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

@@ -2,6 +2,7 @@ package com.earthquake.tracker.quaker.mvp.presenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
     }
 
     @Override
-    public void onBindViewHolder(EarthquakeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EarthquakeViewHolder holder, int position) {
         holder.bindData(featureList.get(position));
     }
 
@@ -55,8 +56,9 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
         }
     }
 
+    @NonNull
     @Override
-    public EarthquakeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EarthquakeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.quaker_item, parent, false);
         return new EarthquakeViewHolder(rowView);
     }
