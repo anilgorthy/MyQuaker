@@ -45,17 +45,6 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
         holder.bindData(featureList.get(position));
     }
 
-    public void hideItem(final int position) {
-        Log.i(TAG, "Before hiding data size is: " + featureList.size());
-        if (featureList.size() > 0) {
-            featureList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, featureList.size());
-            notifyDataSetChanged();
-            Log.i(TAG, "After hiding data size is: " + featureList.size());
-        }
-    }
-
     @NonNull
     @Override
     public EarthquakeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -90,14 +79,13 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
         @Override
         public void onClick(View view) {
             final Intent detailsIntent = EarthquakeDetailsActivity
-                                            .createIntent(view.getContext(),
-                                                Utils.getFormattedDate(feature.getProperties().getTime()),
-                                                (Double.toString(feature.getProperties().getMag())),
-                                                Utils.getAddress(view.getContext(),
-                                                        feature.getGeometry().getCoordinates()),
-                                                getAdapterPosition());
+                    .createIntent(view.getContext(),
+                            Utils.getFormattedDate(feature.getProperties().getTime()),
+                            (Double.toString(feature.getProperties().getMag())),
+                            feature.getProperties().getPlace(),
+                            feature.getProperties().getUrl(),
+                            getAdapterPosition());
             view.getContext().startActivity(detailsIntent);
         }
     }
-
 }

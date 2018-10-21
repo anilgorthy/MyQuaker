@@ -6,17 +6,6 @@
     android:orientation="vertical"
     tools:context=".mvp.view.EarthquakeDetailsActivity">
 
-    <Switch
-        android:id="@+id/hideItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:checked="false"
-        android:text="@string/hide"
-        android:switchPadding="10dp"/>
-
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -98,6 +87,29 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp"
                 tools:text="Ferndale, California, United States" />
+
+            <TextView
+                android:id="@+id/urlTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationValueTV"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/url"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/urlValueTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/urlTitleTV"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:autoLink="web"
+                tools:text="https://earthquake.usgs.gov/earthquakes/eventpage/us1000h3p4" />
 
         </RelativeLayout>
 

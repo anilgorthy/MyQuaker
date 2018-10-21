@@ -4,7 +4,10 @@
     <string name="magnitude">Magnitude:</string>
     <string name="date">Date:</string>
     <string name="location">Location:</string>
+    <string name="url">URL:</string>
     <string name="earthquake_detail">Earthquake Detail</string>
     <string name="showAll">Show All</string>
+    <string name="showMap">Show Map</string>
     <string name="hide">Hide</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZ2FuaWxiIiwiYSI6ImNqbmhvNGl5YjBmd3Yza3Fyc2FnMTF0amEifQ.fdRExE6A51kcHUBgebo6Yg</string>
 </resources>

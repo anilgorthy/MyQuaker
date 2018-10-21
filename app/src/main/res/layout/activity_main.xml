@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingTop="10dp"
@@ -11,19 +12,32 @@
     tools:context=".mvp.view.EarthquakeListActivity">
 
     <Switch
-        android:id="@+id/showAll"
+        android:id="@+id/showHide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="10dp"
         android:checked="false"
-        android:text="@string/showAll"
+        android:text="@string/showMap"
         android:switchPadding="10dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         android:id="@+id/quakerRV"/>
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets" />
 
 </LinearLayout>

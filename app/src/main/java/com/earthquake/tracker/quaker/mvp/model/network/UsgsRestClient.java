@@ -32,24 +32,6 @@ public class UsgsRestClient {
         initRetrofit(context);
     }
 
-//    private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
-//        @Override
-//        public okhttp3.Response intercept(Chain chain) throws IOException {
-//            okhttp3.Response originalResponse = chain.proceed(chain.request());
-//            if (Utils.isNetworkAvailable()) {
-//                int maxAge = 60; // read from cache for 1 minute
-//                return originalResponse.newBuilder()
-//                        .header("Cache-Control", "public, max-age=" + maxAge)
-//                        .build();
-//            } else {
-//                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-//                return originalResponse.newBuilder()
-//                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-//                        .build();
-//            }
-//        }
-//    };
-
     private static void initRetrofit(Context context) {
 
         int cacheSize = 10 * 1024 * 1024; // 10 MB
@@ -60,28 +42,28 @@ public class UsgsRestClient {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                                            .cache(cache)
-                                            .addNetworkInterceptor(new Interceptor() {
-                                                @Override
-                                                public okhttp3.Response intercept(Chain chain) throws IOException {
-                                                    okhttp3.Response originalResponse = chain.proceed(chain.request());
-                                                    if (Utils.isNetworkAvailable()) {
-                                                        Log.i(TAG, "Connected to the data network");
-                                                        int maxAge = 600; // read from cache for 10 minutes
-                                                        return originalResponse.newBuilder()
-                                                                .header("Cache-Control", "public, max-age=" + maxAge)
-                                                                .build();
-                                                    } else {
-                                                        Log.i(TAG, "NOT connected to the data network");
-                                                        int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                                                        return originalResponse.newBuilder()
-                                                                .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                                                                .build();
-                                                    }
-                                                }
-                                            })
-                                            .addInterceptor(loggingInterceptor)
-                                            .build();
+                .cache(cache)
+                .addNetworkInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        okhttp3.Response originalResponse = chain.proceed(chain.request());
+                        if (Utils.isNetworkAvailable()) {
+                            Log.i(TAG, "Connected to the data network");
+                            int maxAge = 600; // read from cache for 10 minutes
+                            return originalResponse.newBuilder()
+                                    .header("Cache-Control", "public, max-age=" + maxAge)
+                                    .build();
+                        } else {
+                            Log.i(TAG, "NOT connected to the data network");
+                            int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+                            return originalResponse.newBuilder()
+                                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                                    .build();
+                        }
+                    }
+                })
+                .addInterceptor(loggingInterceptor)
+                .build();
 
         usgsRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -103,34 +85,7 @@ public class UsgsRestClient {
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
 
-                if(response.isSuccessful() && response.raw().networkResponse() != null) {
-                    Log.d(TAG, "Response from server w/ status code: "
-                                                + response.code());
-                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull final Call<Earthquake> call, @NonNull final Throwable t) {
-                Log.e(TAG, "Failure when fetching response: " + t.getMessage());
-                callback.onFailure(t.getMessage());
-            }
-        });
-    }
-
-    public void get30DayEarthquakesSignificant(final ApiCallback<Earthquake> callback) {
-        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
-
-        final Call<Earthquake> call = usgsApiEndpointInterface.getSignificantEarthquakesFor30Days();
-        call.enqueue(new Callback<Earthquake>() {
-            @Override
-            public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
-                if (response.isSuccessful() && response.raw().cacheResponse() != null) {
-                    Log.d(TAG, "Response from cache");
-                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
-                }
-
-                if(response.isSuccessful() && response.raw().networkResponse() != null) {
+                if (response.isSuccessful() && response.raw().networkResponse() != null) {
                     Log.d(TAG, "Response from server w/ status code: "
                             + response.code());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
@@ -145,7 +100,34 @@ public class UsgsRestClient {
         });
     }
 
-    public void get30DayEarthquakesAll(final ApiCallback<Earthquake> callback) {
+    public void getSignificantEarthquakes(final ApiCallback<Earthquake> callback) {
+        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
+
+        final Call<Earthquake> call = usgsApiEndpointInterface.getSignificantEarthquakesFor30Days();
+        call.enqueue(new Callback<Earthquake>() {
+            @Override
+            public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
+                if (response.isSuccessful() && response.raw().cacheResponse() != null) {
+                    Log.d(TAG, "Response from cache");
+                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
+                }
+
+                if (response.isSuccessful() && response.raw().networkResponse() != null) {
+                    Log.d(TAG, "Response from server w/ status code: "
+                            + response.code());
+                    callback.onResponse(new ApiResponse<>(response.code(), response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull final Call<Earthquake> call, @NonNull final Throwable t) {
+                Log.e(TAG, "Failure when fetching response: " + t.getMessage());
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void getAllEarthquakes(final ApiCallback<Earthquake> callback) {
         usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getAllEarthquakesFor30Days();
@@ -157,7 +139,7 @@ public class UsgsRestClient {
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
 
-                if(response.isSuccessful() && response.raw().networkResponse() != null) {
+                if (response.isSuccessful() && response.raw().networkResponse() != null) {
                     Log.d(TAG, "Response from server w/ status code: "
                             + response.code());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));

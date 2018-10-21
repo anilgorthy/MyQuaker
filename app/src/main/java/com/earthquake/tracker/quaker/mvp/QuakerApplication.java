@@ -2,8 +2,9 @@ package com.earthquake.tracker.quaker.mvp;
 
 import android.app.Application;
 
+import com.earthquake.tracker.quaker.R;
 import com.earthquake.tracker.quaker.mvp.model.network.UsgsRestClient;
-import com.squareup.leakcanary.LeakCanary;
+import com.mapbox.mapboxsdk.Mapbox;
 
 public class QuakerApplication extends Application {
 
@@ -14,12 +15,8 @@ public class QuakerApplication extends Application {
         super.onCreate();
         application = this;
         UsgsRestClient.init(this);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
+        // Mapbox Access token
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
     }
 
     public static QuakerApplication getQuakerApplication() {
