@@ -57,7 +57,7 @@ public class UsgsRestClient {
 
         // Create the logging interceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                                             .cache(cache)
@@ -98,14 +98,14 @@ public class UsgsRestClient {
         call.enqueue(new Callback<Earthquake>() {
             @Override
             public void onResponse(@NonNull final Call<Earthquake> call, @NonNull final Response<Earthquake> response) {
-                if (response.isSuccessful() && response.raw().cacheResponse() != null) {
+                if (response.isSuccessful() && response.raw().cacheResponse() != null && response.body() != null) {
                     Log.d(TAG, "Response from cache");
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
 
-                if(response.isSuccessful() && response.raw().networkResponse() != null) {
-                    Log.d(TAG, "Response from server w/ status code: "
-                                                + response.code());
+                if(response.isSuccessful() && response.raw().networkResponse() != null && response.body() != null) {
+                    Log.d(TAG, "Response from server w/ data size: "
+                                                + response.body().getFeatures().size());
                     callback.onResponse(new ApiResponse<>(response.code(), response.body()));
                 }
             }
@@ -118,7 +118,7 @@ public class UsgsRestClient {
         });
     }
 
-    public void get30DayEarthquakesSignificant(final ApiCallback<Earthquake> callback) {
+    public void getSignificantEarthquakes(final ApiCallback<Earthquake> callback) {
         usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getSignificantEarthquakesFor30Days();
@@ -145,7 +145,7 @@ public class UsgsRestClient {
         });
     }
 
-    public void get30DayEarthquakesAll(final ApiCallback<Earthquake> callback) {
+    public void getAllEarthquakes(final ApiCallback<Earthquake> callback) {
         usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getAllEarthquakesFor30Days();

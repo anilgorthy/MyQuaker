@@ -18,12 +18,60 @@
         android:layout_marginTop="10dp"
         android:checked="false"
         android:text="@string/showAll"
+        android:visibility="gone"
         android:switchPadding="10dp"/>
+
+    <TextView
+        android:id="@+id/dateTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/text_for_radio_button"
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/oneAndAbove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/earthquake_one_and_above"
+            android:textSize="16sp"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton
+            android:id="@+id/significant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/earthquake_significant"
+            android:textSize="16sp"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/earthquake_all"
+            android:textSize="16sp"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
+        tools:listitem="@layout/quaker_item"
         android:id="@+id/quakerRV"/>
 
 </LinearLayout>

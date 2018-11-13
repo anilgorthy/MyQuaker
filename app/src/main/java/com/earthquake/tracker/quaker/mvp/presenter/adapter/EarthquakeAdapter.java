@@ -93,8 +93,7 @@ public class EarthquakeAdapter extends RecyclerView.Adapter<EarthquakeAdapter.Ea
                                             .createIntent(view.getContext(),
                                                 Utils.getFormattedDate(feature.getProperties().getTime()),
                                                 (Double.toString(feature.getProperties().getMag())),
-                                                Utils.getAddress(view.getContext(),
-                                                        feature.getGeometry().getCoordinates()),
+                                                feature.getProperties().getPlace(), feature.getProperties().getUrl(),
                                                 getAdapterPosition());
             view.getContext().startActivity(detailsIntent);
         }

@@ -22,7 +22,7 @@ public class QuakerPresenter {
     }
 
     public void fetchSignificantEarthquakeData() {
-        usgsRestClient.get30DayEarthquakesSignificant(new ApiCallback<Earthquake>() {
+        usgsRestClient.getSignificantEarthquakes(new ApiCallback<Earthquake>() {
             @Override
             public void onResponse(ApiResponse<Earthquake> apiResponse) {
                 final Earthquake earthquake = apiResponse.getResponseObject();
@@ -55,7 +55,7 @@ public class QuakerPresenter {
      * FYI: The data size is ~10k so, for this demo not using this API
      */
     public void fetchAllEarthquakeData() {
-        usgsRestClient.get30DayEarthquakesAll(new ApiCallback<Earthquake>() {
+        usgsRestClient.getAllEarthquakes(new ApiCallback<Earthquake>() {
             @Override
             public void onResponse(ApiResponse<Earthquake> apiResponse) {
                 final Earthquake earthquake = apiResponse.getResponseObject();

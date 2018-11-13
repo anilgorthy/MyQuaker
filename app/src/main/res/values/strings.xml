@@ -4,7 +4,12 @@
     <string name="magnitude">Magnitude:</string>
     <string name="date">Date:</string>
     <string name="location">Location:</string>
+    <string name="url">Details:</string>
     <string name="earthquake_detail">Earthquake Detail</string>
     <string name="showAll">Show All</string>
     <string name="hide">Hide</string>
+    <string name="text_for_radio_button">Select an Earthquake detail</string>
+    <string name="earthquake_one_and_above">&gt;1</string>
+    <string name="earthquake_significant">Significant</string>
+    <string name="earthquake_all">All</string>
 </resources>

@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.earthquake.tracker.quaker.R;
@@ -20,7 +22,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EarthquakeListActivity extends AppCompatActivity implements QuakerView {
+public class EarthquakeListActivity extends AppCompatActivity
+        implements QuakerView, CompoundButton.OnCheckedChangeListener {
 
     @BindView(R.id.showAll)
     Switch showAllItems;
@@ -28,13 +31,16 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     @BindView(R.id.quakerRV)
     RecyclerView earthquakeRV;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     public static final String TAG = EarthquakeListActivity.class.getSimpleName();
     private QuakerPresenter quakerPresenter;
     private EarthquakeAdapter earthquakeAdapter;
     private LinearLayoutManager layoutManager;
     private static int index = -1;
     private static int top = -1;
-    private List<Feature> mFeatureList;
+    private List<Feature> featureList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +48,10 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         Log.i(TAG, "In onCreate()");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        showAllItems.setOnCheckedChangeListener(this);
         quakerPresenter = new QuakerPresenter(this);
-        quakerPresenter.fetchOneAndAboveEarthquakeData();
         layoutManager = new LinearLayoutManager(this,
-                            LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager.VERTICAL, false);
         earthquakeRV.setLayoutManager(layoutManager);
         earthquakeAdapter = new EarthquakeAdapter();
     }
@@ -59,7 +65,8 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     @Override
     public void quakesData(List<Feature> featureList) {
         Log.i(TAG, "In quakesData(), earthquake data size is: " + featureList.size());
-        mFeatureList = featureList;
+        this.featureList = featureList;
+        progressBar.setVisibility(View.GONE);
         earthquakeAdapter.setData(featureList);
         earthquakeRV.setAdapter(earthquakeAdapter);
     }
@@ -77,9 +84,9 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "In onResume(), mFeatureList size is: " + mFeatureList.size());
+        Log.i(TAG, "In onResume()");
         //set the position
-        if(index != -1) {
+        if (index != -1) {
             layoutManager.scrollToPositionWithOffset(index, top);
         }
 
@@ -94,7 +101,7 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
         showAllItems.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     Log.i(TAG, "Showing all items");
                     Utils.resetHideItemList();
                 }
@@ -121,6 +128,44 @@ public class EarthquakeListActivity extends AppCompatActivity implements QuakerV
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        if (isChecked) {
+            Log.i(TAG, "Showing All");
+            earthquakeRV.setVisibility(View.GONE);
+        } else {
+            Log.i(TAG, "Showing List");
+            earthquakeRV.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.oneAndAbove:
+                progressBar.setVisibility(View.VISIBLE);
+                if (checked) {
+                    quakerPresenter.fetchOneAndAboveEarthquakeData();
+                }
+                break;
+            case R.id.significant:
+                progressBar.setVisibility(View.VISIBLE);
+                if (checked) {
+                    quakerPresenter.fetchSignificantEarthquakeData();
+                }
+                break;
+            case R.id.all:
+                progressBar.setVisibility(View.VISIBLE);
+                if (checked) {
+                    quakerPresenter.fetchAllEarthquakeData();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }
