@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface QuakerView {
     void quakesData(List<Feature> featuresList);
+    void handleEarthquakeType();
 }

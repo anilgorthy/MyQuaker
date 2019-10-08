@@ -21,4 +21,10 @@ Quaker Tracker
     1. if the user decides to display all (including hidden) row items, then the user can't go back to the hidden row items
 1. Also, the user has to manually disable the display all switch in order to leverage the hide row item capability
 1. Tested the app on Pixel 2 (running OS 9)  
+
+
+### Pending (`develop` branch) tasks
+1. Convert to PURE **MVP** where Activity passes the type of radio button clicked to Presenter
+1. Ensure unit tests can be written for Presenter
+1.  
    

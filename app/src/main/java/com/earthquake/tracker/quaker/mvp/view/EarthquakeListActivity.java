@@ -141,6 +141,7 @@ public class EarthquakeListActivity extends AppCompatActivity
         }
     }
 
+    //TODO: need to pass this to presenter so create a method in QuakerView
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -168,4 +169,8 @@ public class EarthquakeListActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void handleEarthquakeType() {
+        //TODO
+    }
 }
