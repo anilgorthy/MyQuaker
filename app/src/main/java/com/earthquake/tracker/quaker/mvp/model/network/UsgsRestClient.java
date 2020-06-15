@@ -88,11 +88,13 @@ public class UsgsRestClient {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
     }
 
 
     public void getMagOneAboveEarthquakes(final ApiCallback<Earthquake> callback) {
-        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
+//        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getMagnitudeOneAndAboveEarthquakesFor30Days();
         call.enqueue(new Callback<Earthquake>() {
@@ -119,7 +121,7 @@ public class UsgsRestClient {
     }
 
     public void getSignificantEarthquakes(final ApiCallback<Earthquake> callback) {
-        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
+//        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getSignificantEarthquakesFor30Days();
         call.enqueue(new Callback<Earthquake>() {
@@ -146,7 +148,7 @@ public class UsgsRestClient {
     }
 
     public void getAllEarthquakes(final ApiCallback<Earthquake> callback) {
-        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
+//        usgsApiEndpointInterface = usgsRetrofit.create(UsgsApiEndpointInterface.class);
 
         final Call<Earthquake> call = usgsApiEndpointInterface.getAllEarthquakesFor30Days();
         call.enqueue(new Callback<Earthquake>() {
