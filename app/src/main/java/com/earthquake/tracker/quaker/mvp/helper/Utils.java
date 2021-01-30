@@ -47,7 +47,7 @@ public class Utils {
 
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
-        List<Address> addresses  = null;
+        List<Address> addresses = null;
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
         } catch (IOException e) {

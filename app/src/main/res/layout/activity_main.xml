@@ -10,7 +10,7 @@
     android:orientation="vertical"
     tools:context=".mvp.view.EarthquakeListActivity">
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/showAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:switchPadding="10dp"/>
 
     <TextView
-        android:id="@+id/dateTitleTV"
+        android:id="@+id/filterSelectionTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -42,21 +42,27 @@
             android:layout_height="wrap_content"
             android:text="@string/earthquake_one_and_above"
             android:textSize="16sp"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:minHeight="@dimen/a11yHeight"
+            android:minWidth="@dimen/a11yHeight"/>
         <RadioButton
             android:id="@+id/significant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/earthquake_significant"
             android:textSize="16sp"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:minHeight="@dimen/a11yHeight"
+            android:minWidth="@dimen/a11yHeight"/>
         <RadioButton
             android:id="@+id/all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/earthquake_all"
             android:textSize="16sp"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:minHeight="@dimen/a11yHeight"
+            android:minWidth="@dimen/a11yHeight"/>
     </RadioGroup>
 
     <ProgressBar
@@ -67,11 +73,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         tools:listitem="@layout/quaker_item"
-        android:id="@+id/quakerRV"/>
+        android:id="@+id/quakerRV"
+        android:importantForAccessibility="yes"/>
 
 </LinearLayout>

@@ -1,8 +1,9 @@
 package com.earthquake.tracker.quaker.mvp.model.network;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.earthquake.tracker.quaker.mvp.helper.Utils;
 import com.earthquake.tracker.quaker.mvp.model.ApiResponse;
